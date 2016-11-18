@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>面试题~</title>
+  <style>
+	input{
+	  width: 50px;
+	  height: 30px;
+	}
+	ul,li{
+	  list-style: none;
+	  padding: 0;
+	  margin: 0;
+	}
+  </style>
+</head>
+<body>
+  <input class='num1' type="text">
+  <input class='num2' type="text">
+  <input class='num3' type="text">
+  <input class='num4' type="text">
+  <button class="btn">点我获取结果</button>
+  <button class="load">重新开始</button>
+  <br>
+  <br>
+  <ul id='wrap'>
+	 <li class="list"></li>
+  </ul>
+  
+
+
+  <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
+  <script>
+
+  	//刷新页面
+  	$('.load').on('click',function(){
+  	  location.reload()
+  	})
+
+	var arr = ['+','-','*','/']; //运算符
+	var sub = ['(',')'];
+
+	$('.btn').on('click',function(){
+	  //判定用户输入为1-13数字
+	  var ipt =$('input');
+
+	  var t1 = $('.num1').val(),
+	      t2 = $('.num2').val(),
+	      t3 = $('.num3').val(),
+	      t4 = $('.num4').val();
+
+
+
+	  for(var i=0;i<ipt.length;i++){
+	  	//判断用户所输入
+	    var val = parseInt(ipt.eq(i).val());
+	    if(typeof val !== 'number' || isNaN(val) !== false){
+	      return $('#wrap').text('非数字')
+	    }else if( val<1 || val>13){
+	      return $('#wrap').text('数值错误')
+	    }
+
+	    console.log(val)
+	  }
+
+
+	  for(var m =0; m <ipt.length; m++){
+	  	a =parseInt(ipt.eq(m).val());
+	  	for(var n =0; n <ipt.length; n++){
+	  	  if( m == n){
+	  	  	continue;
+	  	  }
+	  	  b =parseInt(ipt.eq(n).val());
+	  	  for(var k =0; k <ipt.length; k++){
+	  	  	if( k == n || k == m){
+	  	  	  continue;
+	  	  	}
+	  	  	c =parseInt(ipt.eq(k).val());
+	  	  	for(var x =0; x <ipt.length; x++){
+	  	  	  if( x == k || x == n || x == m ){
+	  	  	  	continue;
+	  	  	  }
+	  	  	  d =parseInt(ipt.eq(x).val());
+	  	  	  each(a,b,c,d);
+	  	  	}
+	  	  }
+	  	}
+	  }
+	  filter(newArr)
+	});
+
+
+	//创建新数组存放结果
+	var newArr = [];
+
+	function each(a,b,c,d){
+
+	   //存放结果
+	  for(var i=0;i<arr.length;i++){
+	    for(var k= 0;k<arr.length;k++){
+	      for(var j=0;j<arr.length;j++){
+	      	//把所有括号的情况列出来进行遍历
+
+	  		re1 = sub[0] + a + arr[i] + b + sub[1] + arr[k] + c + arr[j] + d;
+	  		re2 = sub[0] + a + arr[i] + b  + arr[k] + c + sub[1] + arr[j] + d;
+	  		re3 = sub[0] + sub[0] + a + arr[i] + b  + sub[1] + arr[k] + c + sub[1] + arr[j] + d;
+	  		re4 = sub[0] +  a + arr[i] + sub[0] + b + arr[k] + c + sub[1] + sub[1] + arr[j] + d;
+	  		re5 = a + arr[i] + sub[0] + b + arr[k] + c + sub[1] + arr[j] + d;
+	  		re6 = a + arr[i] + sub[0] + b + arr[k] + c + arr[j] + d + sub[1];
+	  		re7 = a + arr[i] + sub[0] + sub[0] + b + arr[k] + c + sub[1] + arr[j] + d + sub[1];
+	  		re8 = a + arr[i] + b + arr[k] + sub[0] + c + arr[j] + d + sub[1];
+	  		re9 = a + arr[i] + sub[0] + b + arr[k] + sub[0] + c + arr[j] + d + sub[1] + sub[1];
+	  		re10 = sub[0] + a + arr[i] + b + sub[1] + arr[k] + sub[0] + c + arr[j] + d + sub[1];
+	  		re11 = a + arr[i] + b + arr[k] + c + arr[j] + d;
+
+	  		//获取全部的计算公式
+			newArr.push(re1,re2,re3,re4,re5,re6,re7,re8,re9,re10,re11)
+	  		
+	      }
+	    }
+	  }
+	  return newArr;
+	};
+
+
+	//过滤重复的项目
+	function filter(newArr){
+	  var array = [];
+	  for(var i =0,len = newArr.length; i<len; i++){
+	    if(array.indexOf(newArr[i]) === -1){
+	      array.push(newArr[i])
+	    }
+	  }
+	  console.log(newArr);
+	  console.log(array);
+	  show(array)
+	};
+
+
+	//页面展示
+	function show(arr){
+	  var num = 0; //序号
+
+	  //过滤出==24的项目
+	  arr.forEach(function(el,index){
+
+	  	if(eval(el) === 24){
+	  	  num++;
+	      $('#wrap').append('<li class="list">' + num +':   ' + el + '</li>')
+	  	}
+	  })
+	  console.log(num);
+
+	  if(num === 0){
+	  	$('#wrap').text('没有结果')
+	  }
+	};
+
+
+
+  </script>
+
+</body>
+</html>

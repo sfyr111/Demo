@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas电子时钟</title>
+	<style>
+	html,body{
+		height: 100%;
+		margin: 0;
+		background: #ccc;
+	}
+	#canvas{
+		height: 100%;
+		width: 100%;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="canvas">
+	</canvas>
+
+	
+	<script src="src/digit.js"></script>
+	<script>
+	//设定画布大小
+	var winWidth = document.documentElement.clientWidth;
+	var winHeight = document.body.clientHeight;
+	var canvas = document.getElementById('canvas');
+	canvas.width = winWidth;
+	canvas.height = winHeight;
+	var context = canvas.getContext('2d');
+
+	// 设置数字距离边框的距离
+	var marginTop = Math.round(winHeight/4);
+	var marginLeft = Math.round(winWidth/10);
+	//设置绘制圆点的半径，108为二维点阵宽度
+	var r = Math.round(winWidth*4/5/108)-1;
+
+	//存放动画小球的容器
+	var ball =[];
+	// 动画小球的颜色
+	var colors = ['red','#777','#29b5c7','#6f18de','yellow','#333','#18de44']
+
+	// 保存旧的时间
+	var oldTime = new Date(); 	
+
+	setInterval(function(){
+		time(context)
+		update()
+	},50)
+
+
+	// 改变时间数据
+	function update(){
+
+		// 设置新的时间
+		var newTime = new Date()
+		var curHours = oldTime.getHours()
+		var nextHours = newTime.getHours()
+
+		var curMinutes = oldTime.getMinutes()
+		var nextMinutes = newTime.getMinutes()
+
+		var curSeconds = oldTime.getSeconds()
+		var nextSeconds = newTime.getSeconds()
+
+
+		// 分别检测小时、分钟、秒 数字的变动
+		if(oldTime.getSeconds() != newTime.getSeconds()){
+
+			if(parseInt(curHours/10)!= parseInt(nextHours/10)){
+				addBalls(marginLeft, marginTop, parseInt(nextSeconds/10))
+			}
+			if(parseInt(curHours%10)!= parseInt(nextHours%10)){
+				addBalls(marginLeft+15*(r+1), marginTop, parseInt(nextSeconds%10))
+			}
+
+			if(parseInt(curMinutes/10)!= parseInt(nextMinutes/10)){
+				addBalls(marginLeft+39*(r+1), marginTop, parseInt(nextSeconds/10))
+			}
+			if(parseInt(curMinutes%10)!= parseInt(nextMinutes%10)){
+				addBalls(marginLeft+54*(r+1), marginTop, parseInt(nextSeconds%10))
+			}
+
+			if(parseInt(curSeconds/10)!= parseInt(nextSeconds/10)){
+				addBalls(marginLeft+78*(r+1), marginTop, parseInt(nextSeconds/10))
+			}
+			if(parseInt(curSeconds%10)!= parseInt(nextSeconds%10)){
+				addBalls(marginLeft+93*(r+1), marginTop, parseInt(nextSeconds%10))
+			}
+
+			oldTime = newTime
+		}
+		updateBall();
+	}
+
+	// 动画小球的运动轨迹
+	function updateBall(){
+		for(var i =0; i<ball.length; i++){
+			ball[i].x += ball[i].vx
+			ball[i].y += ball[i].vy
+			ball[i].vy +=ball[i].g
+
+			if(ball[i].y >= winHeight - r){
+				ball[i].y = winHeight-r
+				ball[i].vy = -ball[i].vy*0.7
+			}
+		}
+		//将超出屏幕的圆球全部删除增加性能
+		for(var k = 0;k<ball.length;k++){
+			if(ball[k].x<0 || ball[k].x >winWidth || ball.length>350){
+				ball.splice(k,1)
+			}
+		}
+	}
+
+	// aBall作为ball数组的元素、g为加速度、vx为x轴偏移、vy为y轴偏移
+	function addBalls(x,y,num){
+		for(var i=0; i<digit[num].length; i++){
+			for(var j=0; j<digit[num][i].length; j++){
+				if( digit[num][i][j] ===1){
+					var aBall ={
+						x: x+j*2*(r+1)+(r+1),
+						y: y+i*2*(r+1)+(r+1),
+						g: 2 + Math.random(),
+						vx: Math.pow(-1,Math.ceil(Math.random()*100))*6,
+						vy: -6,
+						color: colors[Math.floor(Math.random()*colors.length)]
+					}
+					ball.push(aBall)
+					console.log(ball.length)
+				}
+			}
+		}
+	}
+
+	function time(cxt){
+		//刷新绘图接口
+		cxt.clearRect(0,0,winWidth,winHeight)
+		var hours = new Date().getHours()
+		var minutes = new Date().getMinutes()
+		var seconds = new Date().getSeconds()
+		//绘制主体时间数字小球和冒号小球
+		drawTime(marginLeft, marginTop, parseInt(hours/10), cxt)
+		drawTime(marginLeft+15*(r+1), marginTop, parseInt(hours%10), cxt)
+
+		drawTime(marginLeft+30*(r+1), marginTop, 10, cxt)
+		drawTime(marginLeft+39*(r+1), marginTop, parseInt(minutes/10), cxt)
+		drawTime(marginLeft+54*(r+1), marginTop, parseInt(minutes%10), cxt)
+		drawTime(marginLeft+69*(r+1), marginTop, 10, cxt)
+
+		drawTime(marginLeft+78*(r+1), marginTop, parseInt(seconds/10), cxt)
+		drawTime(marginLeft+93*(r+1), marginTop, parseInt(seconds%10), cxt)
+
+		// 绘制动画小球
+		for(var i= 0;i< ball.length;i++){
+			cxt.fillStyle = ball[i].color
+			cxt.beginPath()
+			cxt.arc(ball[i].x, ball[i].y, r, 0, 2*Math.PI)
+			cxt.closePath() 
+			cxt.fill()
+		}
+
+	}
+
+	// 绘制主体时间（小时>冒号>分钟>冒号>秒）
+	function drawTime(x, y, num, cxt){
+		context.fillStyle = "black"
+	 	for(var i = 0; i< digit[num].length;i++){
+	 		for(var j = 0; j<digit[num][i].length; j++){
+	 			if(digit[num][i][j] === 1){
+	 				context.beginPath()
+	 				context.arc(x+j*2*(r+1)+(r+1), y+i*2*(r+1)+(r+1), r, 0, 2*Math.PI)
+	 				context.closePath()
+	 				context.fill()
+	 			}
+	 		}
+	 	}
+	}
+
+
+	</script>
+	
+</body>
+</html> 
