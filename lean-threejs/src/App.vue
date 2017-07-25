@@ -17,7 +17,7 @@ export default {
      scene = new THREE.Scene();
 
     //渲染器
-     renderer = new THREE.WebGLRenderer({
+    renderer = new THREE.WebGLRenderer({
       antialias:true//是否开启反锯齿
     });
     renderer.setClearColor( 'yellow' ); //设置背景/透明度
@@ -41,11 +41,11 @@ export default {
     controls.autoRotate = true
     
     //地板
-   let planeMaterial = new THREE.MeshLambertMaterial( { color: '#ccc' } ),
+   let planeMaterial = new THREE.MeshLambertMaterial({color: 'gray'}),
         geometry = new THREE.PlaneBufferGeometry( 300, 200 ),
        plane = new THREE.Mesh( geometry, planeMaterial);
     plane.rotation.x = - Math.PI / 2;
-    plane.position.set(0,0,0);
+    plane.position.set(0,0,0); 
     plane.receiveShadow = true
     scene.add(plane);
 
