@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header :seller='seller'></v-header>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
@@ -36,10 +36,11 @@
     },
     created () {
       axios.get('/api/seller').then((res) => {
-        console.log(res.data)
-        let data = res.data
-        if (data.errno === ERR_OK) {
-          console.log(data)
+        let response = res.data
+        console.log(response)
+        if (response.errno === ERR_OK) {
+          this.seller = response.data
+          console.log(this.seller)
         }
       })
     }
@@ -53,7 +54,7 @@
 #app{
   .tab{
     display: flex;
-    wdith: 100%;
+    width: 100%;
     height: 40px; 
     line-height: 40px; 
     display: flex;
