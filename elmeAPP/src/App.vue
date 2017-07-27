@@ -54,7 +54,7 @@
 #app{
   .tab{
     display: flex;
-    width: 100%;
+    wdith: 100%;
     height: 40px; 
     line-height: 40px; 
     display: flex;
