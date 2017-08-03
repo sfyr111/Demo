@@ -37,17 +37,15 @@
     created () {
       axios.get('/api/seller').then((res) => {
         let response = res.data
-        console.log(response)
         if (response.errno === ERR_OK) {
           this.seller = response.data
-          console.log(this.seller)
         }
       })
     }
   }
 </script>
 
-<style lang='less' rel="stylesheet/less">
+<style lang='less' rel="stylesheet/less" scpoed>
 
 @import './common/stylus/mixin.less';
 
