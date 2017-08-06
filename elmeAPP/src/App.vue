@@ -15,7 +15,7 @@
     <div class="content">
       <!-- 我是content -->
     </div>
-    <router-view></router-view>
+    <router-view :seller='seller'> </router-view>
   </div>
 </template>
 
