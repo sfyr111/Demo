@@ -5,7 +5,7 @@
   			<img width="64" height="64" :src="seller.avatar">
   		</div>
   		<div class="content">
-				<div class="title">
+			<div class="title">
 	  			<span class="brand"></span>
 	  			<span class="name">{{seller.name}}</span>
 	  		</div>
@@ -344,10 +344,10 @@ export default {
 }
 /* 动画过渡 */
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
+  	transition: opacity .5s
 }
 .fade-enter, .fade-leave-to {
-  opacity: 0
+ 	 opacity: 0
 }
 
 </style>
