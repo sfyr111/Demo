@@ -30,7 +30,7 @@
 									<span class='old' v-show='food.oldPrice'>￥{{food.oldPrice}}</span>
 								</div>
 								<div class="cartcontrol-wrapper">
-									<cartcontrol :food='food'></cartcontrol>
+									<cartcontrol :food='food' v-on:addCart="addCart"></cartcontrol>
 								</div>
 							</div>
 						</li>
@@ -38,11 +38,12 @@
 				</li>
 			</ul>
 		</div>
-		<shopcart :select-foods='selectFoods' :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcart>
+		<shopcart ref='shopcart' :select-foods='selectFoods' :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcart>
 	</div>
 </template>
 
 <script>
+
 import BScroll from 'better-scroll'
 import shopcart from './shopcart'
 import cartcontrol from './cartcontrol'
@@ -71,7 +72,6 @@ export default {
 	created() {
 		axios.get('api/goods').then((response) => {
 			let { data } = response
-			console.log(data)
 			if (data.errno === ERR_OK) {
 				this.goods = data.data
 				this.$nextTick(() => {
@@ -80,9 +80,12 @@ export default {
 				})
 			}
 		})
-
 	},
 	methods: {
+		addCart (target) {
+			this.$refs.shopcart.drop(target)
+			// console.log(this.$refs.shopcart)
+		},
 		_initScroll() {
 			this.meunScroll = new BScroll(this.$refs.menuWrapper, {
 				click: true   // 默认开启点击事件

@@ -27,12 +27,14 @@ export default {
 			if (!event._constructed) {
 				return
 			}
-			console.log(this.food.count)
+			// console.log(this.food.count)
 			if (!this.food.count) {
 				Vue.set(this.food, 'count', 1)  // 使用vue.set接口添加obj key 更新视图
 			} else {
 				this.food.count++
 			}
+			// emit to 父组件 goods
+			this.$emit('addCart', event.target)
 		},
 
 		decreaseCart(event) {

@@ -13,10 +13,17 @@
     	</div>
     	<div class="content-right">
 	    	<div class="pay" :class='payClass'>
-	    		{{payDesc}}
+	    		{{payDesc}}  
 	    	</div>
 	    </div>
     </div>
+		<div class="ball-container">
+			<transition-group>
+				<div v-for='ball,idx in balls' v-show='true' class='ball' key='idx'>
+					<div class="inner"></div>
+				</div>
+			</transition-group>
+		</div>
   </div>
 </template>
 <script>
@@ -27,7 +34,7 @@ export default {
 			type: Array,
 			default () {
 				return [
-				{
+					{
 					price: 19,
 					count: 1
 				}]
@@ -42,6 +49,30 @@ export default {
   		default: 0
   	}
   },
+	created () {
+		console.log(this.selectFoods)
+	},
+	data () {
+		return {
+			balls: [
+				{
+					show: false
+				},
+				{
+					show: false
+				},
+				{
+					show: false
+				},
+				{
+					show: false
+				},
+				{
+					show: false
+				}
+			]
+		}
+	},
   computed: {
   	totalPrice () {
   		let total = 0
@@ -75,7 +106,12 @@ export default {
   			return 'enough'
   		}
   	}
-  }
+  },
+	methods: {
+		drop (el) {
+			console.log(el)
+		}
+	}
 }
 </script>
 
@@ -179,6 +215,22 @@ export default {
 						background: #00b43c;
 						color: #fff;
 					}
+				}
+			}
+		}
+		.ball-container {
+			.ball {
+				position: fixed;
+				left: 32px;
+				bottom: 22px;
+				z-index: 500;
+				transition: all .4s;
+				.inner {
+					width: 16px;
+					height: 16px;
+					border-radius: 50%;
+					background: rgb(0 ,160, 220);
+					transition: all .4s;
 				}
 			}
 		}
