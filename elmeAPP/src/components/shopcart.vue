@@ -110,6 +110,9 @@ export default {
 	methods: {
 		drop (el) {
 			console.log(el)
+			for (let i= 0; i< this.balls; i++) {
+
+			}
 		}
 	}
 }
