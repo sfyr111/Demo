@@ -11,6 +11,9 @@ var scene , camera, renderer;
 
 export default {
   name: 'app',
+  created () {
+    alert(1)
+  },
   mounted() {
      const threejs = document.getElementById('threejs')
     //场景
@@ -20,6 +23,9 @@ export default {
     renderer = new THREE.WebGLRenderer({
       antialias:true//是否开启反锯齿
     });
+
+    alert(renderer)
+
     renderer.setClearColor( 'yellow' ); //设置背景/透明度
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -45,9 +51,6 @@ export default {
     let textureCube = new THREE.CubeTextureLoader()
       .setPath('../static/')
       .load( [ 'PX.jpg', 'NX.jpg', 'PY.jpg', 'NY.jpg', 'PZ.jpg', 'NZ.jpg' ] );
-
-
-
 
     console.log(textureCube.manager)
     console.log(THREE.CubeRefractionMapping)
@@ -104,5 +107,12 @@ export default {
 }
 canvas{
   display: block;
+}
+
+.helow{
+  border: 1px solid red;
+  position: fixed;
+  left: 40px;
+  top: 50px;
 }
 </style>

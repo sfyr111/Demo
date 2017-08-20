@@ -18,11 +18,15 @@
 	    </div>
     </div>
 		<div class="ball-container">
-			<transition-group>
-				<div v-for='ball,idx in balls' v-show='true' class='ball' key='idx'>
-					<div class="inner"></div>
-				</div>
-			</transition-group>
+				<transition-group 
+				  v-on:before-enter="beforeEnter"
+					v-on:enter="enter"
+					v-on:after-enter="afterEnter"
+				>
+					<div v-for='ball,idx in balls' v-show='ball.show' class='ball' key='idx'>
+						<div class="inner inner-hook"></div>
+					</div>
+				</transition-group>
 		</div>
   </div>
 </template>
@@ -70,7 +74,8 @@ export default {
 				{
 					show: false
 				}
-			]
+			],
+			dropBalls: []
 		}
 	},
   computed: {
@@ -109,11 +114,68 @@ export default {
   },
 	methods: {
 		drop (el) {
-			console.log(el)
-			for (let i= 0; i< this.balls; i++) {
+			// console.log(el)
+			for (let i= 0; i< this.balls.length; i++) {
+				let ball = this.balls[i]
+				console.log(ball)
+				if(!ball.show) {
+					ball.show = true
+					ball.el = el
+					this.dropBalls.push(ball)
 
+					console.log(this.dropBalls[0])
+					return
+				}
 			}
-		}
+		},
+
+		beforeEnter (el) {
+			console.log('before')
+			console.log(el)
+			let count = this.balls.length
+			console.log(count + 'ball.length')
+			while(count--) {
+				let ball = this.balls[count]
+				if(ball.show) {
+					let rect = ball.el.getBoundingClientRect()
+					let x = rect.left - 32
+					let y = -(window.innerHeight - rect.top - 22)
+					el.style.display = ''
+					el.style.transform = `translate3d(0, ${y}px, 0)`
+					let inner = el.getElementsByClassName('inner-hook')[0]
+					inner.style.transform = `translate3d(${x}px, 0, 0)`
+					console.log('wancheng')
+				}
+			}
+		},
+
+		enter (el, done) {
+			/* eslint-disable no-unused-vars */
+			// let rf = el.offsetHeight
+			this.$nextTick(() => {
+				el.style.transform = 'translate3d(0, 0, 0)'
+				let inner = el.getElementsByClassName('inner-hook')[0]
+				inner.style.transform = 'translate3d(0, 0, 0)'
+			})
+			let ball = this.dropBalls.shift()		
+			if(ball) {
+				console.log(ball)
+				ball.show = false
+				// el.style.display = 'none'
+			}
+			done()
+		},
+
+		// afterEnter(el) {
+		// 	console.log(this.dropBalls)
+
+		// 	let ball = this.dropBalls.shift()		
+		// 	if(ball) {
+		// 		console.log(ball)
+		// 		ball.show = false
+		// 		// el.style.display = 'none'
+		// 	}
+		// }
 	}
 }
 </script>
@@ -227,13 +289,13 @@ export default {
 				left: 32px;
 				bottom: 22px;
 				z-index: 500;
-				transition: all .4s;
+				transition: all .4s cubic-bezier(0.49, -0.29, 0.75, 0.41);
 				.inner {
 					width: 16px;
 					height: 16px;
 					border-radius: 50%;
 					background: rgb(0 ,160, 220);
-					transition: all .4s;
+					transition: all .4s linear;
 				}
 			}
 		}
