@@ -1,104 +1,103 @@
 <template>
-  <div class="header">
-  	<div class="content-wrapper">
-  		<div class="avatar">
-  			<img width="64" height="64" :src="seller.avatar">
-  		</div>
-  		<div class="content">
-			<div class="title">
-	  			<span class="brand"></span>
-	  			<span class="name">{{seller.name}}</span>
-	  		</div>
-	  		<div class="description">
-	  			{{seller.description}} / {{seller.deliveryTime}}分钟送达
-	  		</div>
-	  		<div class="support" v-if='seller.supports'>
-	  			<span class="icon" :class="classMap[seller.supports[0].type]"></span>
-	  			<span class="text">{{seller.supports[0].description}}</span>
-	  		</div>
-  		</div>
-      <div v-if='seller.supports' class="support-count" @click='showDetail'>
-      	<span class='count'>{{seller.supports.length}}个</span>
-      	<i class='icon-keyboard_arrow_right'></i>
-      </div>
-  	</div>
-  	<div class="bulletin-wrapper" @click='showDetail'>
-  		<span class="bulletin-title"></span>
-  		<span class="bulletin-text">{{seller.bulletin}}</span>
-    	<i class='icon-keyboard_arrow_right'></i>
-  	</div>
-  	<div class="background">
-  		<img :src="seller.avatar" width=100% height=100%>
-  	</div>	
-  	<!-- 遮罩 -->
-  	<transition name='fade'>
-	  	<div class="detail" v-show='detailShow'>
-	  		<div class="detail-wrapper">
-	  			<div class="detail-main">
-	  				<h1 class='name'>{{seller.name}}</h1>
-	  				<div class="star-wrapper">
-	  					<star :size='48' :score='seller.score'></star>
-	  				</div>
-	  				<div class="title">
-	  					<div class="line"></div>
-	  					<div class="text">优惠信息</div>
-	  					<div class="line"></div>
-	  				</div>
-	  				<ul class="supports" v-if='seller.supports'>
-		  				<li class='support-item' v-for='(item,index) in seller.supports'>
-		  					<span class='icon' :class='classMap[seller.supports[index].type]'></span>
-		  					<span class="text">{{seller.supports[index].description}}</span>
-		  				</li>
-		  			</ul>
-						<div class="title">
-	  					<div class="line"></div>
-	  					<div class="text">商家公告</div>
-	  					<div class="line"></div>
-	  				</div>
-	  				<div class="bulletin">
-	  						<p class='content'>{{seller.bulletin}}</p>
+	<div class="header">
+		<div class="content-wrapper">
+			<div class="avatar">
+				<img width="64" height="64" :src="seller.avatar">
+			</div>
+			<div class="content">
+				<div class="title">
+					<span class="brand"></span>
+					<span class="name">{{seller.name}}</span>
+				</div>
+				<div class="description">
+					{{seller.description}} / {{seller.deliveryTime}}分钟送达
+				</div>
+				<div class="support" v-if='seller.supports'>
+					<span class="icon" :class="classMap[seller.supports[0].type]"></span>
+					<span class="text">{{seller.supports[0].description}}</span>
+				</div>
+			</div>
+			<div v-if='seller.supports' class="support-count" @click='showDetail'>
+				<span class='count'>{{seller.supports.length}}个</span>
+				<i class='icon-keyboard_arrow_right'></i>
+			</div>
+		</div>
+		<div class="bulletin-wrapper" @click='showDetail'>
+			<span class="bulletin-title"></span>
+			<span class="bulletin-text">{{seller.bulletin}}</span>
+			<i class='icon-keyboard_arrow_right'></i>
+		</div>
+		<div class="background">
+			<img :src="seller.avatar" width=100% height=100%>
+		</div>
+		<!-- 遮罩 -->
+		<transition name='fade'>
+			<div class="detail" v-show='detailShow'>
+				<div class="detail-wrapper">
+					<div class="detail-main">
+						<h1 class='name'>{{seller.name}}</h1>
+						<div class="star-wrapper">
+							<star :size='48' :score='seller.score'></star>
 						</div>
-	  			</div>
-	  		</div>
-	  		<div class="detail-close">
-	  			<i class='icon-close' @click='detailShow=!detailShow'></i>
-	  		</div>
-	  	</div>
-  	</transition>
-  </div>
+						<div class="title">
+							<div class="line"></div>
+							<div class="text">优惠信息</div>
+							<div class="line"></div>
+						</div>
+						<ul class="supports" v-if='seller.supports'>
+							<li class='support-item' v-for='(item,index) in seller.supports'>
+								<span class='icon' :class='classMap[seller.supports[index].type]'></span>
+								<span class="text">{{seller.supports[index].description}}</span>
+							</li>
+						</ul>
+						<div class="title">
+							<div class="line"></div>
+							<div class="text">商家公告</div>
+							<div class="line"></div>
+						</div>
+						<div class="bulletin">
+							<p class='content'>{{seller.bulletin}}</p>
+						</div>
+					</div>
+				</div>
+				<div class="detail-close">
+					<i class='icon-close' @click='detailShow=!detailShow'></i>
+				</div>
+			</div>
+		</transition>
+	</div>
 </template>
 
 <script>
 import star from './star/star'
 export default {
-  props: {
-  	seller: {
-  		type: Object
-  	}
-  },
-  components: {
-  	star
-  },
-  data () {
-    return {
+	props: {
+		seller: {
+			type: Object
+		}
+	},
+	components: {
+		star
+	},
+	data() {
+		return {
 			classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee'],
 			detailShow: false
-    }
-  },
-  created () {
-  	// this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
-  },
-  methods: {
-  	showDetail () {
-  		this.detailShow = true
-  	}
-  }
+		}
+	},
+	created() {
+		// this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+	},
+	methods: {
+		showDetail() {
+			this.detailShow = true
+		}
+	}
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='less' rel="stylesheet/less" scpoed>
-
 @import '../common/stylus/mixin.less';
 
 .header {
@@ -114,32 +113,32 @@ export default {
 		.avatar {
 			display: inline-block;
 			vertical-align: top;
-			img{
+			img {
 				border-radius: 2px;
 			}
 		}
 		.content {
 			display: inline-block;
 			margin-left: 16px;
-			.title{
+			.title {
 				margin: 2px 0 8px 0;
 				font-size: 0;
-				.brand{
+				.brand {
 					display: inline-block;
 					vertical-align: top;
 					width: 30px;
 					height: 18px;
 					/*background-image: url('./header/brand@2x.png');*/
-					.bg-image(); 
+					.bg-image();
 					background-size: 30px 18px;
 					background-repeat: no-repeat;
- 				}
- 				.name{
- 					font-size: 16px;
- 					font-weight: bold;
- 					line-height: 18px;
+				}
+				.name {
+					font-size: 16px;
+					font-weight: bold;
+					line-height: 18px;
 					margin-left: 6px;
- 				}
+				}
 			}
 			.description {
 				margin-bottom: 10px;
@@ -171,7 +170,7 @@ export default {
 						background-image: url('./header/guarantee_1@3x.png')
 					}
 				}
-				.text{
+				.text {
 					line-height: 12px;
 					font-size: 10px;
 				}
@@ -205,7 +204,7 @@ export default {
 		padding: 0 22px 0 12px;
 		white-space: nowrap;
 		overflow: hidden;
-		text-overflow:ellipsis;
+		text-overflow: ellipsis;
 		background: rgba(7, 17, 27, 0.1);
 		.bulletin-title {
 			display: inline-block;
@@ -217,7 +216,7 @@ export default {
 			background-size: 22px 12px;
 		}
 		.bulletin-text {
-			margin:0 4px;
+			margin: 0 4px;
 			vertical-align: top;
 			font-size: 10px;
 		}
@@ -277,7 +276,7 @@ export default {
 						border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 					}
 					.text {
-						padding: 0 12px; 
+						padding: 0 12px;
 						font-weight: 700;
 						font-size: 14px;
 					}
@@ -342,12 +341,14 @@ export default {
 		}
 	}
 }
-/* 动画过渡 */
-.fade-enter-active, .fade-leave-active {
-  	transition: opacity .5s
-}
-.fade-enter, .fade-leave-to {
- 	 opacity: 0
-}
 
+/* 动画过渡 */
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity .5s
+}
+.fade-enter,
+.fade-leave-to {
+	opacity: 0
+}
 </style>

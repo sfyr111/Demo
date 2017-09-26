@@ -82,9 +82,11 @@ export default {
 		})
 	},
 	methods: {
-		addCart (target) {
-			this.$refs.shopcart.drop(target)
-			// console.log(this.$refs.shopcart)
+		addCart(target) {
+			// optimize
+			this.$nextTick(() => {
+				this.$refs.shopcart.drop(target)
+			})
 		},
 		_initScroll() {
 			this.meunScroll = new BScroll(this.$refs.menuWrapper, {
@@ -131,7 +133,7 @@ export default {
 		},
 
 		// 聯動效果 傳送給 shopcart組件
-		selectFoods () {
+		selectFoods() {
 			let foods = []
 			this.goods.forEach((good) => {
 				good.foods.forEach((food) => {
@@ -204,7 +206,10 @@ export default {
 				display: table-cell;
 				vertical-align: middle;
 				font-size: 12px;
-				.border-1px(rgba(7, 17, 27, 0.1))
+				.border-1px(rgba(7,
+				17,
+				27,
+				0.1))
 			}
 		}
 	}
@@ -219,6 +224,8 @@ export default {
 			color: rgb(147, 153, 159);
 			background: #f3f5f7;
 		}
+
+
 		.food-item {
 			display: flex;
 			margin: 18px;
@@ -239,7 +246,8 @@ export default {
 		.content {
 			flex: 1;
 			.name {
-				margin: 2px 0 8px 0 height 14px;
+				margin: 2px 0 8px 0;
+				height: 14px;
 				line-height: 14px;
 				font-size: 14px;
 				color: rgb(7, 17, 27);
