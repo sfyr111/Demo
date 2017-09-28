@@ -19,7 +19,6 @@
 				</div>
 			</div>
 			<div class="ball-container">
-				<!-- 数据结构的锅  -->
 				<div v-for="ball in balls">
 					<transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
 						<div class="ball" v-show="ball.show">

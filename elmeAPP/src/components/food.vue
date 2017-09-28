@@ -21,7 +21,7 @@
         </div>
 
         <div class="cartcontrol-wrapper">
-          <cartcontrol :food='food'></cartcontrol>
+          <cartcontrol :food='food' @addCart="addCart"></cartcontrol>
         </div>
         <div class="buy" v-show='!food.count || food.count===0' @click='addFirst'>加入购物车</div>
       </div>
@@ -65,8 +65,11 @@ export default {
       this.showFlag = false
     },
 
+    addCart(target) {
+      this.$emit('addCart', event.target)
+    },
+
     addFirst(event) {
-      console.log(11)
       if (!event._constructed) {
         return
       }

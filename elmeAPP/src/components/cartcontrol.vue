@@ -33,6 +33,7 @@ export default {
 			} else {
 				this.food.count++
 			}
+
 			// emit to 父组件 goods
 			this.$emit('addCart', event.target)
 		},

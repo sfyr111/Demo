@@ -42,7 +42,7 @@
 			<shopcart ref='shopcart' :select-foods='selectFoods' :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcart>
 		</div>
 
-			<food :food='selectFood' @addCart="addCart" ref='food'></food>
+			<food :food='selectFood' v-on:addCart="addCart" ref='food'></food>
 	</div>
 </template>
 
@@ -91,7 +91,6 @@ export default {
 	methods: {
 		addCart(target) {
 			// optimize
-			console.log('jiuyi')
 			this.$nextTick(() => {
 				this.$refs.shopcart.drop(target)
 			})
