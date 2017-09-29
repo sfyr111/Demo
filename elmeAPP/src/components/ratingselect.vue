@@ -2,18 +2,17 @@
   <div class="ratingselect">
     <div class="rating-type border-1px">
       <span class='block  positive'>{{desc.all}}
-        <span class='count'>
-          </47span>
-        </span>
-        <span class='block  positive'>{{desc.positive}}
-          <span class='count'>40</span>
-        </span>
-        <span class='block  negative'>{{desc.negative}}
-          <span class='count'>7</span>
-        </span>
+        <span class='count'>47</span>
+      </span>
+      <span class='block positive'>{{desc.positive}}
+        <span class='count'>40</span>
+      </span>
+      <span class='block negative'>{{desc.negative}}
+        <span class='count'>7</span>
+      </span>
     </div>
     <div class="switch">
-      <span class="icon-check_circle"></span>
+      <span class="icon-check_circle">sd</span>
       <span class="text">只看有内容的评价</span>
     </div>
   </div>
@@ -72,9 +71,9 @@ export default {
     padding: 8px 12px;
     margin-right: 8px;
     border-radius: 1px;
-    color: rgb(77, 85, 93); // color: #fff;
+    color: rgb(77, 85, 93);
     &.positive {
-      color: rgba(77, 85, 93);
+      // color: rgba(77, 85, 93);
       background: rgba(0, 160, 0, 2);
     }
     &.negative {
