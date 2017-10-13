@@ -38,7 +38,23 @@
 
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :selectType='selectType' :onlyContent='onlyContent' :desc='desc' :ratings='food.ratings' />
+          <ratingselect :selectType='selectType' @select='select' @toggle='toggleContent' :onlyContent='onlyContent' :desc='desc' :ratings='food.ratings' />
+
+          <div class="rating-wrapper">
+            <ul v-show='food.ratings && food.ratings.length'>
+              <li v-show='needShow(rating.tateType,rating.text)' v-for='rating in food.ratings' class='rating-item border-1px'>
+                <div class='user'>
+                  <span class='name'>{{rating.username}}</span>
+                  <img :src="rating.avatar" alt="" width='12' height='12' class="avatar">
+                </div>
+                <div class="time">{{rating.rateTime | formatDate}}</div>
+                <p class='text'>
+                  <span :class="{'icon-thumb_up': rating.rateType === 0, 'icon-thumb_down': rating.rateType===1}"></span>{{rating.text}}
+                </p>
+              </li>
+            </ul>
+            <div class="no-rating" v-show='!food.ratings || !food.ratings'>暂无评价</div>
+          </div>
         </div>
 
       </div>
@@ -54,9 +70,8 @@ import cartcontrol from './cartcontrol'
 import split from './split'
 import ratingselect from './ratingselect'
 import Vue from 'vue'
+import { formatDate } from '../common/js/date'
 
-const POSITIVE = 0
-const NEGATIVE = 1
 const ALL = 2
 
 export default {
@@ -82,6 +97,7 @@ export default {
       }
     }
   },
+
   methods: {
     show() {
       this.showFlag = true
@@ -103,27 +119,63 @@ export default {
     },
 
     addCart(target) {
-      this.$emit('addCart', event.target)
+      this.$emit('addCart', target)
     },
 
     addFirst(event) {
       if (!event._constructed) {
         return
       }
-      // this.$dispatch('cart.add',event.target)
       this.$emit('addCart', event.target)
       Vue.set(this.food, 'count', 1)
+    },
+
+    needShow(type, text) {
+      if (this.onlyContent && !text) {
+        return false
+      }
+      if (this.selectType === ALL) {
+        return true
+      } else {
+        return type === this.selectType
+      }
+    },
+    select(type) {
+      this.selectType = type
+      this.$nextTick(() => {
+        // better-scroll 更新
+        this.scroll.refresh()
+      })
+    },
+
+    toggleContent() {
+      console.log('toggle')
+      this.onlyContent = !this.onlyContent
+      this.$nextTick(() => {
+        // better-scroll 更新
+        this.scroll.refresh()
+      })
+    }
+  },
+
+  filters: {
+    formatDate(time) {
+      let date = new Date(time)
+      // 把通用的方法放在抽象出来放在 common 目录下
+      return formatDate(date, 'yyyy-MM-dd hh:mm')
     }
   }
 }
 </script>
 
 <style lang='less' rel="stylesheet/less" scpoed>
+@import '../common/stylus/mixin.less';
+
 .food {
   position: fixed;
   left: 0;
   top: 0;
-  bottom: 0;
+  bottom: 48px;
   width: 100%;
   z-index: 30;
   background: #fff;
@@ -249,6 +301,59 @@ export default {
       margin-left: 18px;
       font-size: 14px;
       color: rgb(7, 17, 27);
+    }
+    .rating-wrapper {
+      padding: 0 18px;
+      .rating-item {
+        position: relative;
+        padding: 16px 0;
+        .border-1px(rgba(7, 17, 27, .1));
+        .user {
+          position: absolute;
+          right: 0;
+          top: 16px;
+          line-height: 12px;
+          font-size: 0;
+          .name {
+            display: inline-block;
+            vertical-align: top;
+            color: rgb(147, 153, 159);
+            font-size: 10px;
+            margin-right: 6px;
+          }
+          .avatar {
+            border-radius: 50%;
+          }
+        }
+        .time {
+          line-height: 12px;
+          font-size: 10px;
+          color: rgb(147, 153, 159);
+          margin-bottom: 6px;
+        }
+        .text {
+          line-height: 16px;
+          font-size: 12px;
+          color: rgb(7, 17, 27);
+        }
+        .icon-thumb_up,
+        .icon-thumb_down {
+          margin-right: 4px;
+          line-height: 16px;
+          font-size: 12px;
+        }
+        .icon-thumb_up {
+          color: rgb(0, 160, 220);
+        }
+        .icon-thumb_down {
+          color: rgb(147, 153, 159);
+        }
+      }
+      .no-rating {
+        padding: 16px 0;
+        font-size: 12px;
+        color: rgb(147, 153, 159);
+      }
     }
   }
 }

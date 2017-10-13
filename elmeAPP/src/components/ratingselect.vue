@@ -69,15 +69,15 @@ export default {
       if (!event._constructed) {
         return
       }
-      this.selectType = type
-      // this.$emit('ratingtype.select', type)
+      
+      this.$emit('select', type)
     },
     toggleContent(event) {
       if (!event._constructed) {
         return
       }
-      this.onlyContent = !this.onlyContent
-      // this.$emit('content.toggle',this.onlyContent)
+      // this.$parent.onlyContent = !this.onlyContent
+      this.$emit('toggle')
     }
   }
 }

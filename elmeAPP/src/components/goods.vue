@@ -3,7 +3,7 @@
 		<div class="goods">
 			<div class="menu-wrapper" ref='menuWrapper'>
 				<ul>
-					<li v-for='(item,index) in goods' class='menu-item' :class="{current: currentIndex === index}" @click='selectMenu(index, $event)'>
+					<li v-for='(item,index) in goods' class='menu-item' :key='item.id' :class="{current: currentIndex === index}" @click='selectMenu(index, $event)'>
 						<span class='text border-1px'>
 							<span v-show='item.type>0' class='icon' :class='classMap[item.type]'></span>{{item.name}}
 						</span>
@@ -42,7 +42,7 @@
 			<shopcart ref='shopcart' :select-foods='selectFoods' :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcart>
 		</div>
 
-			<food :food='selectFood' v-on:addCart="addCart" ref='food'></food>
+		<food :food='selectFood' v-on:addCart="addCart" ref='food'></food>
 	</div>
 </template>
 
@@ -132,7 +132,8 @@ export default {
 			}
 			this.selectFood = food
 			this.$refs.food.show()
-		}
+		},
+
 	},
 	computed: {
 		currentIndex() {
@@ -303,6 +304,4 @@ export default {
 		}
 	}
 }
-
-
 </style>
