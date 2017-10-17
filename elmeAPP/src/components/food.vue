@@ -140,6 +140,7 @@ export default {
         return type === this.selectType
       }
     },
+    
     select(type) {
       this.selectType = type
       this.$nextTick(() => {

@@ -15,49 +15,59 @@
     <div class="content">
       <!-- 我是content -->
     </div>
-    <router-view :seller='seller'> </router-view>
+    <keep-alive>
+      <router-view :seller='seller'> </router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-  import header from './components/header'
 
-  const ERR_OK = 0
+import { urlParse } from './common/js/util'
+import header from './components/header'
 
-  export default {
-    name: 'app',
-    components: {
-      'v-header': header
-    },
-    data () {
-      return {
-        seller: {}
+const ERR_OK = 0
+
+export default {
+  name: 'app',
+  components: {
+    'v-header': header
+  },
+  data() {
+    return {
+      seller: {
+        id: (() => {
+          let queryParam = urlParse()
+          return queryParam.id
+        })()
       }
-    },
-    created () {
-      axios.get('/api/seller').then((res) => {
-        let response = res.data
-        if (response.errno === ERR_OK) {
-          this.seller = response.data
-        }
-      })
     }
+  },
+  created() {
+    axios.get(`/api/seller?${this.seller.id} `).then((res) => {
+      let response = res.data
+      if (response.errno === ERR_OK) {
+        // this.seller = response.data
+        this.seller = Object.assign({}, this.seller, response.data)
+        console.log(this.seller.id)
+      }
+    })
   }
+}
 </script>
 
 <style lang='less' rel="stylesheet/less" scpoed>
-
 @import './common/stylus/mixin.less';
 
-#app{
-  .tab{
+#app {
+  .tab {
     display: flex;
-    wdith: 100%;
-    height: 40px; 
-    line-height: 40px; 
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
     display: flex;
     .border-1px(rgba(7, 17, 27, 0.1));
-    .tab-item{
+    .tab-item {
       flex: 1;
       text-align: center;
       >a {
@@ -71,7 +81,4 @@
     }
   }
 }
-
-
-
 </style>

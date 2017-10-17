@@ -1,7 +1,6 @@
 # eleme
 
-> A Vue.js project  
-> 饿了么app
+> 慕课网上饿了么app 的项目, 写的不错, 跟着写了一遍, 视频里是vue 1.0  自己写的时候直接用2.0写了, 一小部分有改动
 
 
 ## Build Setup

@@ -31,7 +31,6 @@ var apiRoutes = express.Router()
 
 
 apiRoutes.get('/seller', function(req, res) {
-  console.log('api')
   res.json({
     errno: 0,
     data: seller
